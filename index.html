@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolzapp</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <link rel="icon" href="img/boolzappicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <div id="app">
+
+        <!-- SEZIONE BACKGROUND -->
+        <section class="mycontainer">
+            <div class="mycontainerup"></div>
+            <div class="mycontainerdown"></div>  
+        </section>
+
+        <!-- BOOLZAPP -->
+        <section class="mybox">
+
+            <!-- Parte sinistra -->
+            <section class="innersx">
+
+                <!--USER-->
+                <nav class="navbarsx">
+                    <div class="usericon">
+                        <img src="img/user.jpg" alt="">
+                    </div>
+                    <div class="head-icons">
+                        <i class="fas fa-circle-notch"></i>
+                        <i class="fas fa-comment-alt"></i>
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </nav>
+
+                <!-- SEARCH -->
+                <section class="searcherbox">
+                    <div class="searcher">
+                        <i class="fas fa-search"></i>
+                        <input class="noborder" type="text" placeholder="cerca o inizia una nuova chat" v-model='search'>
+                    </div>   
+                </section>
+
+                <!-- CONTATTI -->
+                <section class="contacts">
+                    <div class="contacts-container">
+                        <ul>
+                            <li v-for="(contact) in filterContact()" @click='clickContact(contact)' class="contact">
+                                <div v-if='(contact.messages.length>0)'>
+                                    <div class="contactlist">
+                                        <img class="bordericon" :src="contact.avatar" alt="">
+                                        <h4>
+                                            {{contact.name.slice(0, 15)}}<span v-if="contact.name.length > 14">...</span>
+                                        </h4>
+                                    </div>
+                                    <h5>
+                                        {{contact.messages[contact.messages.length-1].text.slice(0, 20)}}<span
+                                            v-if="contact.messages[contact.messages.length -1].text.length > 10">...</span>
+                                    </h5>
+                                </div>
+                                <div v-else>
+                                    <div class="contactlist">
+                                        <img class="bordericon" :src="contact.avatar" alt="">
+                                        <h4>
+                                            {{contact.name.slice(0, 15)}}<span v-if="contact.name.length > 14">...</span>
+                                        </h4>
+                                    </div>
+                                    <h5>
+                                        non ci sono messaggi
+                                    </h5>
+                                </div>
+
+                                <!-- <i @click="clickDeleteContact(index)" class="cursor-pointer fas fa-times"></i> -->
+                            </li>
+                        </ul>
+                    </div>
+                </section> 
+            </section>
+
+
+            <!-- PARTE DESTRA -->
+            <div class="innerdx">
+
+                <!-- CONTATTO ATTIVO -->
+                <div class="navbardx">
+                    <div class="friendicon">
+                        <img class="bordericon" :src="active.avatar" alt=""> 
+                    </div>
+                    <h4>{{active.name}}</h4>
+                    <i class="fas fa-search"></i>
+                </div>
+
+                <div class="chat">
+                    <div class="msgs-container">
+                        <ul class="chatwidth">
+                            <li v-for="(message, index) in active.messages">
+                                <div class="sent" v-if="(message.status=='sent')">
+                                    <p class="green">{{ message.text }}</p>
+                                    <i @click="clickDeleteMsg(index)" class="cursor-pointer fas fa-times"></i>
+                                </div>
+                                <div class="received" v-else>
+                                    <p class="white">{{ message.text }}</p>
+                                    <i @click="clickDeleteMsg(index)" class="cursor-pointer fas fa-times"></i>
+                                </div>
+                                
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footerdx">
+                    <div class="newMsg">
+                        <i class="fas fa-smile"></i>
+                        <input v-model="myText" @keyup.enter="createNewMsg" class="noborder" class="msg" type="text" placeholder="scrivi un nuovo messaggio">
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+        
+        </section>
+
+    </div>
+</body>
+</html>
